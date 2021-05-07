@@ -1,0 +1,192 @@
+
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hello, Bootstrap Table!</title>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!--bootstrap-->
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!--fontawesome-->
+    <script src="https://cdn.bootcss.com/font-awesome/5.8.1/js/all.min.js"></script>
+    <!--bootstrap-table-->
+    <link href="https://cdn.bootcss.com/bootstrap-table/1.14.2/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.14.2/bootstrap-table.min.js"></script>
+    <!--bootstrap-table-lanuage-->
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.14.2/bootstrap-table-locale-all.min.js"></script>
+    <!--bootstrap-table-export-->
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.14.2/extensions/export/bootstrap-table-export.min.js"></script>
+    <!--在客户端保存生成的导出文件-->
+    <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+    <!--以XLSX（Excel 2007+ XML格式）格式导出表（SheetJS）-->
+    <script src="https://cdn.bootcss.com/xlsx/0.14.2/xlsx.core.min.js"></script>
+    <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+    <style type="text/css">table {table-layout:fixed;word-break:break-all;}</style>
+</head>
+<body>
+
+
+{# 推荐用这种方式，比较灵活#}
+<div style="width: 80%;margin: 0 auto">
+    <form class="form-inline " id="toolbar">
+        广告类型:
+        <select class="form-control mr-sm-5" id="ad_type">
+            <option>直通车</option>
+            <option>超级推荐</option>
+            <option>联盟</option>
+        </select>
+        业绩年月:
+        <select class="form-control mr-sm-5" id="ad_date">
+            <option>202012</option>
+            <option>202011</option>
+            <option>202010</option>
+            <option>202009</option>
+            <option>202008</option>
+            <option>202007</option>
+            <option>202006</option>
+        </select>
+        广告负责人(可选):
+        <select class="form-control mr-sm-5" id="host_name">
+            <option></option>
+            <option>徐谚</option>
+            <option>谭少云</option>
+            <option>余孟济</option>
+            <option>李舜禹</option>
+        </select>
+        <input type="text" class="form-control mr-sm-1" id="account" placeholder="查询站点">
+        <button type="button" id="ok" class="btn btn-secondary"><i class="fa fa-search"
+                                                                   aria-hidden="true"></i></button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" onclick="exportData()" class='btn btn-secondary'>导出</button>
+
+    </form>
+    <table id="table" class="table  table-bordered  table-hover  table-striped  table-borderless"></table>
+</div>
+{# 1.先定义一个空表#}
+{# 2.用js初始化表，并填充数据#}
+<script type="text/javascript">
+  function detailFormatter(index, row) {
+    var html = []
+    $.each(row, function (key, value) {
+      html.push('<b>' + key + ':</b> ' + value + '<br>')
+    })
+    return html.join('')
+  }
+
+$('#ok').click(function () {
+<!--  $('#table').bootstrapTable('refresh')-->
+  $('#table').bootstrapTable('refreshOptions',{pageNumber:1,pageSize:15});
+})
+
+
+$(function () {
+    $('#table').bootstrapTable({
+        url: '/search',  // 请求数据源的路由
+        dataType: "json",
+        pagination: true, //前端处理分页
+        singleSelect: false,//是否只能单选
+<!--        search: true, //显示搜索框，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大-->
+        toolbar: '#toolbar', //工具按钮用哪个容器
+        striped: true, //是否显示行间隔色
+        pageSize: 15, //每页的记录行数（*）
+        pageList: [15], //可供选择的每页的行数（*）
+        strictSearch: false,//设置为 true启用 全匹配搜索，false为模糊搜索
+        showColumns: false, //显示内容列下拉框
+        minimumCountColumns: 2, //当列数小于此值时，将隐藏内容列下拉框
+        clickToSelect: true, //设置true， 将在点击某行时，自动勾选rediobox 和 checkbox
+        {#        height: 500, //表格高度，如果没有设置height属性，表格自动根据记录条数决定表格高度#}
+        cardView: false, //是否显示详细视图
+        sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+        columns: [{
+                field: '广告类型',
+                title: '广告类型',
+                align: 'center'  //对齐方式，居中
+            }, {
+                field: '业绩年月',
+                title: '业绩年月',
+                align: 'center'
+            }, {
+                field: '广告花费',
+                title: '广告花费',
+                align: 'center',
+            },{
+                field: 'acos',
+                title: 'acos',
+                align: 'center'  //对齐方式，居中
+            },{
+                field: '广告销售额',
+                title: '广销额',
+                align: 'center'  //对齐方式，居中
+            },{
+                field: '站点销售额',
+                title: '店销额',
+                align: 'center'  //对齐方式，居中
+            },{
+                field: '广告花费/站点销售额',
+                title: '花费占比',
+                align: 'center'  //对齐方式，居中
+            },{
+                field: '广告销售额/站点销售额',
+                title: '广销比',
+                align: 'center'  //对齐方式，居中
+            },{
+                field: '站点实际利润',
+                title: '站点利润',
+                align: 'center'  //对齐方式，居中
+            },{
+                field: '广告利润',
+                title: '广告利润',
+                align: 'center'  //对齐方式，居中
+            },{
+                field: 'CPC',
+                title: 'CPC',
+                align: 'center'  //对齐方式，居中
+            },{
+                field: 'ROI',
+                title: 'ROI',
+                align: 'center'  //对齐方式，居中
+            },{
+                field: 'CR',
+                title: 'CR',
+                align: 'center'  //对齐方式，居中
+            },{
+                field: '广告接手人',
+                title: '广告接手人',
+                align: 'center'  //对齐方式，居中
+            }
+        ],
+        theadClasses:'thead-dark',
+        detailView:true,
+        detailFormatter:'detailFormatter', //详情格式
+        queryParams:function (params){
+            return {
+                ad_date: $('#ad_date').val(), // 请求时向服务端传递的参数
+                ad_type: $('#ad_type').val(),
+                account: $('#account').val(),
+                host_name: $('#host_name').val(),
+                offset: params.offset, // SQL语句偏移量
+                limit: params.limit, // 每页显示数量
+            }
+        },
+        exportTypes: ['xlsx'],//导出格式
+        exportOptions: {//导出设置
+            fileName: 'Tablexxx',//下载文件名称
+        },
+        height:800,
+        width:2000
+    });
+});
+
+function exportData(){
+    $('#table').tableExport({
+        type: 'excel',
+        exportDataType: "all",
+        ignoreColumn: [0],//忽略某一列的索引
+        fileName: 'Tablexxx'//下载文件名称
+    });
+}
+</script>
+</body>
+</html>
