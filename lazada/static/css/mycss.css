@@ -1,0 +1,29 @@
+  <style>
+    body{
+        background: url("https://cn.bing.com/th?id=OHR.SnowCraterLake_EN-CN6398429641_1920x1080.jpg&amp;rf=LaDigue_1920x1080.jpg&amp;pid=hp");
+        animation-name:myfirst;
+        animation-duration:40s;
+        /*变换时间*/
+        animation-delay:2s;
+        /*动画开始时间*/
+        animation-iteration-count:infinite;
+        /*下一周期循环播放*/
+        animation-play-state:running;
+        /*动画开始运行*/
+    }
+    @keyframes myfirst
+    {
+        0%   {background:url("https://cn.bing.com/th?id=OHR.SnowCraterLake_EN-CN6398429641_1920x1080.jpg&amp;rf=LaDigue_1920x1080.jpg&amp;pid=hp");}
+        25%  {background:url("https://cn.bing.com/th?id=OHR.DiamondBeach_EN-CN5517763513_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp");}
+        50%  {background:url("https://cn.bing.com/th?id=OHR.FichtelbergWinter_EN-CN7709514197_1920x1080.jpg&amp;rf=LaDigue_1920x1080.jpg&amp;pid=hp");}
+        75%  {background:url("https://cn.bing.com/th?id=OHR.LoonyDook_EN-CN7586009588_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp");}
+        100% {background:url("https://cn.bing.com/th?id=OHR.SnowCraterLake_EN-CN6398429641_1920x1080.jpg&amp;rf=LaDigue_1920x1080.jpg&amp;pid=hp");}
+    }
+
+    .bg {
+       background:url("/static/baidu.gif") no-repeat center;
+       background-size:contain;
+       width:1900px;
+       padding:0px
+    }
+    </style>

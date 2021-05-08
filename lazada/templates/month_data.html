@@ -1,0 +1,96 @@
+{% extends "index.html" %}
+{% block content %}
+<style>
+        tr th {
+            background-color: rgb(0, 41, 102);
+            position: sticky;
+            top:0;
+        }
+</style>
+
+<form method="post" class="col-md-12">
+    <ul class="pagination">
+        <li><a>
+            <button type="submit" name="month">202006</button>
+        </a></li>
+        <li><a>
+            <button type="submit" name="month">202007</button>
+        </a></li>
+        <li><a>
+            <button type="submit" name="month">202008</button>
+        </a></li>
+        <li><a>
+            <button type="submit" name="month">202009</button>
+        </a></li>
+        <li><a>
+            <button type="submit" name="month">202010</button>
+        </a></li>
+        <li><a>
+            <button type="submit" name="month" >202011</button>
+        </a></li>
+         <li><a>
+            <button type="submit" name="month" >202012</button>
+        </a></li>
+        <li><a>
+            <button type="submit" name="month" >202101</button>
+        </a></li>
+        <li><a>
+            <button type="submit" name="month" >202102</button>
+        </a></li>
+        <li><a>
+            <button type="submit" name="month">202103</button>
+        </a></li>
+    </ul>
+</form>
+
+<div class="col-md-12">
+    <table  style="width: 100%; table-layout: fixed; word-break: break-all;" class="table" >
+        <tr style="background-color:rgb(0,41,102);color:white;" id="f1">
+            <th>序号</th>
+            {% for columes in df %}
+            <th>{{columes}}</th>
+            {% endfor %}
+        </tr>
+        {% for index,row_value in df.iterrows() %}
+        {% set outer_loop = loop %}
+        <tr>
+            <td>{{outer_loop.index-1}}</td>
+            {% for value in row_value %}
+            <td>
+                {% if value in ['徐谚','谭少云','余孟济','李舜禹','李萌'] %}
+                <a class='btn btn-defualt' href="{{ url_for('show_table',host_name = value,ad_type=ad_type)}}">{{value}}</a>
+                {% else %}
+                {{value}}
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script type="text/javascript">
+function add_border(x) {
+    x.style.border = '2px solid rgba(0,51,102,0.9)';
+}
+function del_border(x) {
+    x.style.border = '';
+}
+$(function(){
+    $("tr:not(#f1):even").css("background-color","rgb(245, 248, 252)");
+    $("tr:not(#f1):odd").css("background-color","rgb(225, 232, 240)");
+    $("tr").mouseleave(function(){
+      del_border(this);
+    }).mouseenter(function(){
+      add_border(this);
+    });
+    $("table tr:nth-of-type(2)").css("background-color","#FFFFFF");
+    $("td,th").attr("align","center").css("text-align","center").css("fontSize","12px");
+    $("button").val(function(index,currentvalue){
+        return $(this).text();
+    });
+    $("a").addClass("btn").addClass("btn-defualt")
+    $("[value='{{ad_date}}']").parents().addClass("active")
+});
+</script>
+{% endblock %}

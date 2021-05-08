@@ -1,0 +1,102 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="lazada广告后台">
+    <meta name="author" content="李舜禹">
+    <!--    <link rel="icon" href="{{ url_for('static', filename='mayun.ico') }}">-->
+    <link rel="icon" href="/static/mayun.ico">
+    <title>Lazada广告后台</title>
+    <!--     jQuery文件。务必在bootstrap.min.js 之前引入-->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!--bootstrap-->
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!--    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>-->
+    <link href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--    <link href="/static/css/mycss.css" rel="stylesheet">-->
+    <style>
+        button {border: none;
+                        background-color: transparent;
+                        outline: none;
+        }
+        html{     width:100%;    overflow-x:hidden;}；
+
+    </style>
+
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="navbar-header">
+        <a class="navbar-brand " href="{{ url_for('index') }}">
+            <img align="center" src=" {{ url_for('static', filename='logo.ico') }}" width="150px" height="50px"
+                 class="img-responsive img-rounded">
+        </a>
+    </div>
+    <div class="navbar-form navbar-left">
+        <ul class="nav navbar-nav" style="margin:0px;">
+            <li>
+                <a href="{{url_for('show_table',ad_type='CPC')}}">CPC</a>
+            </li>
+            <li style="margin:0px;">
+                <a href="{{url_for('show_table',ad_type='超级推荐')}}">超级推荐</a>
+            </li>
+            <li>
+                <a href="{{url_for('show_table',ad_type='直通车')}}">直通车</a>
+            </li>
+            <li>
+                <a href="{{url_for('show_table',ad_type='联盟')}}">联盟</a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-form navbar-right">
+        <ul class="nav navbar-nav" style="margin:0px;">
+            <li><a href="{{ url_for('login') }}">登录</a></li>
+            <li style="color:red"><a href="{{ url_for('sign_up') }} " style="color:red">注册</a></li>
+            <li><a href="">哈喽 {{ g.user.username}}</a></li>
+        </ul>
+    </div>
+</nav>
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <form action="{{ url_for('uploader') }}" method="POST" enctype="multipart/form-data">
+                <label style="padding-left:50">上传月数据</label>
+                <input type="file" name="file" accept=".zip"/>
+                 <input type="submit" class="btn-danger" />
+        </form>
+    </div>
+    <div class="col-md-4">
+        {{ myechart|safe }}
+    </div>
+    <div class="col-md-3"></div>
+    <div class="col-md-2">
+        <form action="{{ url_for('extraction') }}" method="post">
+            <label style="padding-left:100">业绩年月</label>
+                <select class="form-control" id="ad_date" name="month">
+                    <option>202103</option>
+                    <option>202102</option>
+                    <option>202101</option>
+                    <option>202012</option>
+                    <option>202011</option>
+                    <option>202010</option>
+                    <option>202009</option>
+                    <option>202008</option>
+                    <option>202007</option>
+                    <option>202006</option>
+                </select>
+                <input type="submit" class="btn btn-success" value="下载月数据明细" />
+        </form>
+    </div>
+</div>
+{% endblock %}
+</body>
+<script>
+    $("option").val(function(index,currentvalue){
+        return $(this).text();
+    });
+</script>
+<!--<script type="text/javascript" color="47,135,193" opacity='0.5' zIndex="-2" count="199" src="http://cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>-->
+<!--<script src="/static/test.js"></script>-->
+</html>
