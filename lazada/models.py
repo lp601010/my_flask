@@ -218,6 +218,8 @@ def read_file(user_path,zd):
         #     pass
         # ss.to_sql(name='ss_month_data', con=db.get_engine(), if_exists='append', index=False)
         # sp.to_sql(name='sp_month_data', con=db.get_engine(), if_exists='append', index=False)
+    except Exception as e:
+        raise Exception
     finally:
         gc.collect()
         return
@@ -275,20 +277,6 @@ if __name__ == '__main__':
 #             ''')
 #     df = pd.DataFrame(columns=base.keys(), data=base)
 #     df.sample(frac=0.33).reset_index(drop=True)
-
-    csv = pd.read_excel(r'C:\Users\Administrator\Downloads\25组（2018-2021年产品和销量）.xlsx')
-    df = csv.drop(['小组', 'ASIN', 'SKU', '2018全年度销售额', '2019全年度销售额', '2020全年度销售额', 'ASIN', '一级类目', '三级类目'], axis=1)
-    df['二级类目'] = df['二级类目'].fillna(value='其他')
-    df = df.groupby(['二级类目'], as_index=True).sum()
-    df.drop(df.columns[:15], axis=1, inplace=True)
-    df = df.astype('int')
-
-    df2 = csv.drop(['小组', 'ASIN', 'SKU', '2018全年度销售额', '2019全年度销售额', '2020全年度销售额', 'ASIN', '一级类目', '二级类目'], axis=1)
-    df2['三级类目'] = df2['三级类目'].fillna(value='其他')
-    df2 = df2.groupby(['三级类目'], as_index=True).sum()
-    df2.drop(df2.columns[:15], axis=1, inplace=True)
-
-    df2 = df2.astype('int')
 
 
     # df = pd.melt(df, id_vars='二级类目', var_name='时间', value_name='销售额')

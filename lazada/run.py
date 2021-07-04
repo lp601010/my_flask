@@ -6,8 +6,13 @@ import time
 warnings.filterwarnings("ignore")
 
 import arrow
-mn = arrow.now().shift(months=-1).format("YYYYMM")
 import pandas as pd
+base=db.session.execute(f'''
+                  select max(业绩年月) mn from lazada_ad.base_data
+                      ''')
+df = pd.DataFrame(columns=base.keys(), data=base)
+mn =df.iloc[[0], [0]].__str__()[-10:-3].replace('-','')
+
 from flask import Flask, render_template, request, Response, jsonify,g,redirect,url_for,flash
 from flask_sqlalchemy import SQLAlchemy
 from pyecharts import options as opts
@@ -83,7 +88,7 @@ def logout():
 
 
 @app.route('/25team', methods=["GET", "POST"])
-def test():
+def team():
     from pyecharts.charts import Line3D,Bar3D,Line
     csv = pd.read_excel(r'C:\Users\Administrator\Downloads\25组（2018-2021年产品和销量）.xlsx')
     df = csv.drop(['小组', 'ASIN', 'SKU', '2018全年度销售额', '2019全年度销售额', '2020全年度销售额', 'ASIN', '一级类目', '三级类目'], axis=1)
@@ -405,6 +410,14 @@ def uploader():
                       pass
       if len(li)!=0:
         return f'上传失败:{li}'
+      connection = db.engine.raw_connection()
+      try:
+          cursor = connection.cursor()
+          cursor.callproc("插入cpc", [g.user.realname])
+          cursor.close()
+          connection.commit()
+      finally:
+          connection.close()
     return '上传成功'
 
 if __name__ == '__main__':
