@@ -75,17 +75,9 @@
         <form action="{{ url_for('extraction') }}" method="post">
             <label style="padding-left:100">业绩年月</label>
                 <select class="form-control" id="ad_date" name="month">
-                    <option>202104</option>
-                    <option>202103</option>
-                    <option>202102</option>
-                    <option>202101</option>
-                    <option>202012</option>
-                    <option>202011</option>
-                    <option>202010</option>
-                    <option>202009</option>
-                    <option>202008</option>
-                    <option>202007</option>
-                    <option>202006</option>
+                     {% for value in time_list %}
+                         <option>{{value.replace('-','')}}</option>
+                     {% endfor %}
                 </select>
                 <input type="submit" class="btn btn-success" value="下载月数据明细" />
         </form>

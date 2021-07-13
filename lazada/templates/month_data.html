@@ -10,42 +10,9 @@
 
 <form method="post" class="col-md-12">
     <ul class="pagination">
-        <li><a>
-            <button type="submit" name="month">202006</button>
-        </a></li>
-        <li><a>
-            <button type="submit" name="month">202007</button>
-        </a></li>
-        <li><a>
-            <button type="submit" name="month">202008</button>
-        </a></li>
-        <li><a>
-            <button type="submit" name="month">202009</button>
-        </a></li>
-        <li><a>
-            <button type="submit" name="month">202010</button>
-        </a></li>
-        <li><a>
-            <button type="submit" name="month" >202011</button>
-        </a></li>
-         <li><a>
-            <button type="submit" name="month" >202012</button>
-        </a></li>
-        <li><a>
-            <button type="submit" name="month" >202101</button>
-        </a></li>
-        <li><a>
-            <button type="submit" name="month" >202102</button>
-        </a></li>
-        <li><a>
-            <button type="submit" name="month">202103</button>
-        </a></li>
-        <li><a>
-            <button type="submit" name="month">202104</button>
-        </a></li>
-         <li><a>
-            <button type="submit" name="month">202105</button>
-        </a></li>
+         {% for value in time_list %}
+              <li><a><button type="submit" name="month">{{value.replace('-','')}}</button></a></li>
+         {% endfor %}
     </ul>
 </form>
 
